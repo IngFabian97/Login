@@ -8,5 +8,6 @@ public class Login {
             LoginGUI loginGUI = new LoginGUI();
             loginGUI.setVisible(true);
         });
+
     }
 }

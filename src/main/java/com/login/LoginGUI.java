@@ -1,8 +1,18 @@
 package com.login;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+
+import com.Conexion.Conexion;
 
 public class LoginGUI extends JFrame{
+
+    //Objeto para la conexion
+    Conexion conexion = new Conexion();
 
     /**
      * Creates new form LoginGUI
@@ -139,6 +149,34 @@ public class LoginGUI extends JFrame{
     /**
      * @param args the command line arguments
      */
+
+     private void validacion(String user, String pass){
+        String sql = "SELECT * FROM usuarios WHERE user = ? AND password = ?";
+
+        try(
+            Connection connection = conexion.dbConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        ) {
+            
+             preparedStatement.setString(1, user); 
+             preparedStatement.setString(2, pass);
+
+            try(
+                ResultSet resultSet = preparedStatement.executeQuery()
+            ){
+                if(resultSet.next()){
+                    
+                }else{
+                    JOptionPane.showMessageDialog(null, "Ha ocurrido un error en los datos, ingresalos de nuevo");
+                    JOptionPane.showMessageDialog(null, "Usuario no existe");
+                }
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error al obtener los datos: " + e);
+        }
+
+     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
